@@ -1,0 +1,224 @@
+/* Header and Footer */
+
+.header,
+.footer {
+  height: 150px;
+  background-color: #ffa500;
+}
+
+.footer{
+  height: 50px;
+}
+
+
+.header__img-pokeball,
+.footer__img-pokeball {
+  height: 25px;
+  width: 25px;
+}
+@media (min-width: 480px) {
+  .header__img-pokeball,
+  .footer__img-pokeball {
+    height: 40px;
+    width: 40px;
+  }
+}
+
+.header__img-pokeball,
+.footer__img-pokeball:hover {
+  cursor: pointer;
+}
+
+.rotate-pokeball {
+  transform: rotate(3600deg);
+  transition: all 2s;
+}
+
+.container-title-img__img{
+  width: 180px;
+  height: 180px;
+}
+@media (min-width: 480px) {
+  .container-title-img__img{
+    width: 300px;
+    height: 300px;
+  }
+}
+@media (min-width: 688px) {
+  .container-title-img__img{
+    width: 350px;
+    height: 350px;
+  }
+}
+
+/* Main */
+
+main{
+  min-height: 600px;
+}
+
+.container-img-close-card{
+  margin-right: 40vw;
+}
+
+.container-cards-pokemons {
+  display: grid;
+  justify-content: center;
+}
+@media (min-width: 688px) {
+  .container-cards-pokemons {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.card-pokemon {
+  border: solid 3px #ffa500;
+}
+@media (min-width: 480px) {
+  .card-pokemon {
+    width: 220px;
+  }
+}
+
+.img-close-card{
+  width: 25px;
+  height: 25px;
+}
+
+.img-close-card:hover{
+  cursor: pointer;
+}
+
+ .card-pokemon__img {
+  width: 130px;
+  height: 130px;
+}
+
+@media (min-width: 480px) {
+  .card-pokemon__name {
+    font-size: 24px;
+  }
+}
+
+.card-pokemon__description {
+  background-color: #30a7d7;
+}
+@media (min-width: 480px) {
+  .card-pokemon__description {
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+.card-pokemon__type,
+.card-pokemon__container-height-weight,
+.card-pokemon__container-habitat-egg-groups,
+.card-pokemon__container-abilities,
+.card-pokemon__container-stats {
+  font-size: 16px; 
+}
+@media (min-width: 480px) {
+  .card-pokemon__type,
+  .card-pokemon__container-height-weight,
+  .card-pokemon__container-habitat-egg-groups,
+  .card-pokemon__container-abilities,
+  .card-pokemon__container-stats{
+    font-size: 20px;
+  }
+}
+
+ @media (min-width: 480px) {
+  .img-pokemon-expanded{
+    width: 200px;
+    height: 200px;
+  }
+  .card-expanded {
+    transition: all 1s;
+    width: 450px;
+  }
+}
+@media (min-width: 688px) {
+  .card-expanded {
+    width: 600px;
+  }
+}
+
+.link-navigation {
+  border-color: #3b83bd;
+}
+
+
+/* Colors */
+.grass {
+  background-color: #9bcc50;
+}
+
+.poison {
+  background-color: #b97fc9;
+}
+
+.fire {
+  background-color: #fd7d24;
+}
+
+.water {
+  background-color: #00aae4;
+}
+
+.bug {
+  background-color: #729f3f;
+}
+
+.normal {
+  background-color: grey;
+}
+
+.flying {
+  background-color: #bdb9b8;
+}
+
+.electric {
+  background-color: yellow;
+}
+
+.ground {
+  background-color: #f7de3f;
+}
+
+.fairy {
+  background-color: #fdb9e9;
+}
+
+.fighting {
+  background-color: #d56723;
+}
+
+.psychic {
+  background-color: #f366b9;
+}
+
+.rock {
+  background-color: #a38c21;
+}
+
+.steel {
+  background-color: #9eb7b8;
+}
+
+.ice {
+  background-color: #51c4e7;
+}
+
+.dragon{
+  background-color: chocolate;
+}
+
+.dark{
+  background-color: #707070;
+}
+
+.ghost{
+background-color: #7b62a3;
+}
+
