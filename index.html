@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokeDex</title>
+    <link rel="shortcut icon" href="./imgs/pokeball-icon.png" />
+    <!-- jQuery -->
+    <script defer src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <!-- jQuery -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Bootstrap -->
+
+    <script defer src="./src/index.js"></script>
+    <link rel="stylesheet" href="./src/index.css">
+</head>
+
+<body>
+     <div id="root">
+        <header class="header d-flex justify-content-center align-items-center mb-5">
+            <img class="header__img-pokeball header__img-pokeball-1" src="./imgs/pokeball.png" alt="pokeball">
+            <img class="container-title-img__img ms-4 me-4" src="./imgs/pokemon-header.png" alt="pokemon-header">
+            <img class="header__img-pokeball header__img-pokeball-2" src="./imgs/pokeball.png" alt="pokeball">
+        </header>       
+
+        <main>
+            <div class="container-img-close-card d-flex justify-content-center mb-5">
+                <img class="img-close-card d-none" src="./imgs/close.png" alt="close-card">
+              </div>
+              <div class="container-cards-pokemons"></div>
+        </main>
+
+        <nav>
+            <ul class="pagination pagination-lg justify-content-center m-0">
+                <li class="page-item"><a class="link-navigation link-navigation-back page-link text-dark"
+                        href="#">Previous</a></li>
+                <li class="page-item"><a class="link-navigation link-navigation-next page-link text-dark" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+    
+        <footer class="footer d-flex justify-content-center align-items-center mt-5">
+            <img class="footer__img-pokeball" src="./imgs/pokeball.png" alt="pokeball">
+        </footer>
+    </div>
+    
+</body>
+
+</html>
