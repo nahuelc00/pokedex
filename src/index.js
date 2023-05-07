@@ -186,8 +186,8 @@ function createCardPokemon(
   <div class="card-body card-pokemon__description d-none rounded p-2 mb-0 mt-4">
     <div>
       <div class="card-pokemon__container-height-weight mb-2">
-          <p class="card-text m-0 mb-2">Height: <span class="ms-3 text-white opacity-75">${height}0 cm</span></p>
-          <p class="card-text m-0">Weight: <span class="ms-3 text-white opacity-75">${convertHectogramToKilogram(weight)} Kg</span></p>
+          <p class="card-text m-0 mb-2">Height:<span class="ms-3 text-white opacity-75">${height}0 cm</span></p>
+          <p class="card-text m-0">Weight:<span class="ms-3 text-white opacity-75">${convertHectogramToKilogram(weight)} Kg</span></p>
       </div>
 
       <div class=" card-pokemon__container-habitat-egg-groups mb-2">
