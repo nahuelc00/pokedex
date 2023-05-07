@@ -4,7 +4,9 @@
   "description": "",
   "main": "",
   "scripts": {
-    "start": "http-server -c-1"
+    "start": "http-server -c-1",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "author": "",
   "license": "ISC",
