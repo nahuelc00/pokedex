@@ -1,1 +1,17 @@
-# pokedex
+# Pokedex
+**Pokedex to see different pokemons and check their stats.**
+
+### Installation:
+- download or clone repo
+- run: ***npm install***
+
+#### to run tests:
+- Install http-server
+
+- run: ***npm run start***
+
+- run: ***npm run cypress:open***
+
+
+### Demo: https://nahuelc00.github.io/pokedex/
+
