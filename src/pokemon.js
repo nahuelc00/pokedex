@@ -1,24 +1,19 @@
 const infoUrl = {
   urlInitial: 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20',
-  url: 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20',
+  urlActual: 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20',
   page: '',
 };
 
 async function getPokemons() {
-  const response = await fetch(infoUrl.url);
+  const response = await fetch(infoUrl.urlActual);
   const responseInJson = await response.json();
   const nextUrlPokemons = responseInJson.next;
   const previousUrlPokemons = responseInJson.previous;
 
-  infoUrl.page === 'next' ? (infoUrl.url = nextUrlPokemons) : ''; // eslint-disable-line no-unused-expressions
+  infoUrl.page === 'next' ? (infoUrl.urlActual = nextUrlPokemons) : ''; // eslint-disable-line no-unused-expressions
+  infoUrl.page === 'previous' ? (infoUrl.urlActual = previousUrlPokemons) : ''; // eslint-disable-line no-unused-expressions
 
-  if (infoUrl.page === 'previous' && infoUrl.url === infoUrl.urlInitial) {
-    infoUrl.url = infoUrl.urlInitial;
-  } else if (infoUrl.page === 'previous') {
-    infoUrl.url = previousUrlPokemons;
-  }
-
-  const responsePokemons = await fetch(infoUrl.url);
+  const responsePokemons = await fetch(infoUrl.urlActual);
   const responsePokemonsInJson = await responsePokemons.json();
   return { pokemons: responsePokemonsInJson.results };
 }

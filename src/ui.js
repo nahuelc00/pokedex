@@ -209,10 +209,12 @@ function goNextPage(infoUrl) {
 
 function goPreviousPage(infoUrl) {
   $('.link-navigation-back').on('click', () => {
-    // eslint-disable-next-line no-param-reassign
-    infoUrl.page = 'previous';
-    $('.container-cards-pokemons').empty();
-    getAndRenderPokemons();
+    if (infoUrl.urlActual !== infoUrl.urlInitial) {
+      // eslint-disable-next-line no-param-reassign
+      infoUrl.page = 'previous';
+      $('.container-cards-pokemons').empty();
+      getAndRenderPokemons();
+    }
   });
 }
 
