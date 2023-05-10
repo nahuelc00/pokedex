@@ -1,7 +1,6 @@
 /* eslint-disable import/extensions */
+/* eslint-disable no-shadow */
 /* global  $ */
-/* eslint no-shadow: */
-/* eslint no-param-reassign: "error" */
 
 import {
   getPokemons, getEggGroupsPokemon, getHabitatPokemon, getInfoPokemon,
@@ -212,6 +211,7 @@ function getAndRenderDataPokemons() {
 
 function goNextPage(infoUrl) {
   $('.link-navigation-next').on('click', () => {
+    // eslint-disable-next-line no-param-reassign
     infoUrl.page = 'next';
     $('.container-cards-pokemons').empty();
     getAndRenderDataPokemons();
@@ -220,6 +220,7 @@ function goNextPage(infoUrl) {
 
 function goPreviousPage(infoUrl) {
   $('.link-navigation-back').on('click', () => {
+    // eslint-disable-next-line no-param-reassign
     infoUrl.page = 'previous';
     $('.container-cards-pokemons').empty();
     getAndRenderDataPokemons();
