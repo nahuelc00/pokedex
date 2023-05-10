@@ -67,63 +67,45 @@ function createCardPokemon(
   habitat,
   eggGroupsArray,
 ) {
-  const card = `
-  <div id=${id} class="card-pokemon card ms-3 me-3 mb-4 p-3">
-  
-    <div class="d-flex card-pokemon__container-img justify-content-center">
-        <img src="${imgUrl}" class="card-pokemon__img mb-3" alt="${namePokemon}">
-    </div>
-  
-    <p class="m-0 mb-3 card-pokemon__name text-center">${capitalizeFirstLetter(namePokemon)}</p>
-  
-    <div class="d-flex card-pokemon__container-types gap-4 justify-content-center align-items-center">
-        ${typesArray.map((type) => `<p class="card-text card-pokemon__type ${type} m-0 rounded p-1">${capitalizeFirstLetter(type)}</p>`)}
-    </div>
-  
-    <div class="card-body card-pokemon__description d-none rounded p-2 mb-0 mt-4">
-      <div>
-        <div class="card-pokemon__container-height-weight mb-2">
-            <p class="card-text m-0 mb-2">Height:<span class="ms-3 text-white opacity-75">${height}0 cm</span></p>
-            <p class="card-text m-0">Weight:<span class="ms-3 text-white opacity-75">${convertHectogramToKilogram(weight)} Kg</span></p>
-        </div>
-  
-        <div class=" card-pokemon__container-habitat-egg-groups mb-2">
-          <div class="mb-2">
-            <p class="card-text m-0">Habitat:<span class="ms-3 text-white opacity-75">${capitalizeFirstLetter(habitat)}</span></p>
-          </div>
-  
-          <div> 
-            Egg Groups:
-            <ul class="m-0"> 
-             ${eggGroupsArray.map((eggGroup) => `<li class="text-white opacity-75">${capitalizeFirstLetter(eggGroup)}</li>`)}
-            </ul>
-          </div>
-        </div>
-  
-        <div class="card-pokemon__container-abilities m-0 ">
-            Abilities:
-            <ul class="m-0">
-                ${abilitiesArray.map((ability) => `<li class="text-white opacity-75">${capitalizeFirstLetter(ability)}</li>`)}
-            </ul>
-        </div>
-      </div>
-  
-        <div>
-          <div class="card-pokemon__container-stats"> Stats:
-              <ul class="m-0">
-                ${statsArray.map((stat) => `<li>${capitalizeFirstLetter(stat.name)}: <span class="text-white opacity-75">${stat.base_stat}</span>
-                </li>`)}
-                <li>Total: <span class="text-white opacity-75">${calculateTotalStat(statsArray)}</span></li>
-                </ul>
-          </div>
-        </div>
-        
-        </div>
-  
-    </div>
-  </div>
-   `;
-  return card.replace(/,/g, '');
+  const $templateCardPokemon = $('.template-card-pokemon');
+  const clone = $templateCardPokemon[0].content.cloneNode(true);
+
+  $(clone).find('.card-pokemon').attr('id', id);
+  const $img = $(clone).find('.card-pokemon__img');
+  const $namePokemon = $(clone).find('.card-pokemon__name');
+  const $containerTypes = $(clone).find('.card-pokemon__container-types');
+  const $height = $(clone).find('.card-pokemon__height > span');
+  const $weight = $(clone).find('.card-pokemon__weight > span');
+  const $habitat = $(clone).find('.card-pokemon__habitat > span');
+  const $eggGroups = $(clone).find('.card-pokemon__egg-groups');
+  const $abilities = $(clone).find('.card-pokemon__abilities');
+  const $stats = $(clone).find('.card-pokemon__stats');
+
+  $img.attr('src', imgUrl);
+  $namePokemon.text(capitalizeFirstLetter(namePokemon));
+
+  typesArray.forEach((type) => {
+    $containerTypes.append(`<p class="card-text card-pokemon__type ${type} m-0 rounded p-1">${capitalizeFirstLetter(type)}</p>`);
+  });
+
+  $height.text(`${height}0 cm`);
+  $weight.text(`${convertHectogramToKilogram(weight)} Kg`);
+  $habitat.text(capitalizeFirstLetter(habitat));
+
+  eggGroupsArray.forEach((eggGroup) => {
+    $eggGroups.append(`<li class="text-white opacity-75">${capitalizeFirstLetter(eggGroup)}</li>`);
+  });
+
+  abilitiesArray.forEach((ability) => {
+    $abilities.append(`<li class="text-white opacity-75">${capitalizeFirstLetter(ability)}</li>`);
+  });
+
+  statsArray.forEach((stat) => {
+    $stats.append(`<li>${capitalizeFirstLetter(stat.name)}: <span class="text-white opacity-75">${stat.base_stat}</span></li>`);
+  });
+  $stats.append(`<li>Total: <span class="text-white opacity-75">${calculateTotalStat(statsArray)}</span></li>`);
+
+  return $(clone).find('.card-pokemon')[0];
 }
 
 function getAndRenderDataPokemons() {
@@ -188,8 +170,8 @@ function getAndRenderDataPokemons() {
                 data.eggGroups,
               );
 
-              const cardId = $.parseHTML($card)[1].id;
               renderCard($card);
+              const cardId = $($card).attr('id');
 
               $(`#${cardId}`).on('click', function () { /* eslint func-names: */
                 $('.img-close-card').removeClass('d-none');
