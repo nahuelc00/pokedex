@@ -6,7 +6,7 @@ import {
   getPokemons, getEggGroupsPokemon, getHabitatPokemon, getInfoPokemon,
   infoUrl,
 } from './pokemon.js';
-import { convertHectogramToKilogram, calculateTotalStat, capitalizeFirstLetter } from './logic.js';
+import { convertHectogramToKilogram, calculateTotalStat, capitalizeFirstLetter } from './utilities.js';
 
 function renderCard($card) {
   $('.container-cards-pokemons').append($card);
