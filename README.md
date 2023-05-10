@@ -1,5 +1,5 @@
 # Pokedex
-**Pokedex to see different pokemons and check their stats.**
+**Pokedex to see different pokemons and check their stats.Made with Html, Css and JavaScript. Using jQuery, Bootstrap for styles and Cypress for testing.**
 
 ### Installation:
 - download or clone repo
