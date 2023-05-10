@@ -108,7 +108,7 @@ function createCardPokemon(
   return $(clone).find('.card-pokemon')[0];
 }
 
-function getAndRenderDataPokemons() {
+function getAndRenderPokemons() {
   getPokemons().then((data) => {
     const { pokemons } = data;
 
@@ -196,7 +196,7 @@ function goNextPage(infoUrl) {
     // eslint-disable-next-line no-param-reassign
     infoUrl.page = 'next';
     $('.container-cards-pokemons').empty();
-    getAndRenderDataPokemons();
+    getAndRenderPokemons();
   });
 }
 
@@ -205,7 +205,7 @@ function goPreviousPage(infoUrl) {
     // eslint-disable-next-line no-param-reassign
     infoUrl.page = 'previous';
     $('.container-cards-pokemons').empty();
-    getAndRenderDataPokemons();
+    getAndRenderPokemons();
   });
 }
 
@@ -214,4 +214,4 @@ function listenNavigationOfPage() {
   goPreviousPage(infoUrl);
 }
 
-export { getAndRenderDataPokemons, rotatePokeballs, listenNavigationOfPage };
+export { getAndRenderPokemons, rotatePokeballs, listenNavigationOfPage };
