@@ -1,84 +1,74 @@
-import { getPokemons, getEggGroupsPokemon, getHabitatPokemon, getInfoPokemon } from "./pokemon.js"
-import { convertHectogramToKilogram, calculateTotalStat, capitalizeFirstLetter } from "./logic.js"
-import { infoUrl } from "./pokemon.js";
+/* eslint-disable import/extensions */
+/* global  $ */
+/* eslint no-shadow: */
+/* eslint no-param-reassign: "error" */
+
+import {
+  getPokemons, getEggGroupsPokemon, getHabitatPokemon, getInfoPokemon,
+  infoUrl,
+} from './pokemon.js';
+import { convertHectogramToKilogram, calculateTotalStat, capitalizeFirstLetter } from './logic.js';
 
 function renderCard($card) {
-    $(".container-cards-pokemons").append($card);
+  $('.container-cards-pokemons').append($card);
 }
 
 function rotatePokeballs() {
-    $(".header__img-pokeball-1").on("click", () => {
-        $(".header__img-pokeball-1").addClass("rotate-pokeball");
-        $(".header__img-pokeball-1").css("pointer-events", "none");
-        setTimeout(() => {
-            $(".header__img-pokeball-1").removeClass("rotate-pokeball");
-            $(".header__img-pokeball-1").css("pointer-events", "initial");
-        }, 2500);
-    });
+  $('.header__img-pokeball-1').on('click', () => {
+    $('.header__img-pokeball-1').addClass('rotate-pokeball');
+    $('.header__img-pokeball-1').css('pointer-events', 'none');
+    setTimeout(() => {
+      $('.header__img-pokeball-1').removeClass('rotate-pokeball');
+      $('.header__img-pokeball-1').css('pointer-events', 'initial');
+    }, 2500);
+  });
 
-    $(".header__img-pokeball-2").on("click", () => {
-        $(".header__img-pokeball-2").addClass("rotate-pokeball");
-        $(".header__img-pokeball-2").css("pointer-events", "none");
-        setTimeout(() => {
-            $(".header__img-pokeball-2").removeClass("rotate-pokeball");
-            $(".header__img-pokeball-2").css("pointer-events", "initial");
-        }, 2500);
-    });
+  $('.header__img-pokeball-2').on('click', () => {
+    $('.header__img-pokeball-2').addClass('rotate-pokeball');
+    $('.header__img-pokeball-2').css('pointer-events', 'none');
+    setTimeout(() => {
+      $('.header__img-pokeball-2').removeClass('rotate-pokeball');
+      $('.header__img-pokeball-2').css('pointer-events', 'initial');
+    }, 2500);
+  });
 
-    $(".footer__img-pokeball").on("click", () => {
-        $(".footer__img-pokeball").addClass("rotate-pokeball");
-        $(".footer__img-pokeball").css("pointer-events", "none");
-        setTimeout(() => {
-            $(".footer__img-pokeball").removeClass("rotate-pokeball");
-            $(".footer__img-pokeball").css("pointer-events", "initial");
-        }, 2500);
-    });
-}
-
-function goNextPage(infoUrl) {
-    $(".link-navigation-next").on("click", () => {
-        infoUrl.page = "next";
-        $(".container-cards-pokemons").empty();
-        getAndRenderDataPokemons();
-    });
-}
-
-function goPreviousPage(infoUrl) {
-    $(".link-navigation-back").on("click", () => {
-        infoUrl.page = "previous";
-        $(".container-cards-pokemons").empty();
-        getAndRenderDataPokemons();
-    });
+  $('.footer__img-pokeball').on('click', () => {
+    $('.footer__img-pokeball').addClass('rotate-pokeball');
+    $('.footer__img-pokeball').css('pointer-events', 'none');
+    setTimeout(() => {
+      $('.footer__img-pokeball').removeClass('rotate-pokeball');
+      $('.footer__img-pokeball').css('pointer-events', 'initial');
+    }, 2500);
+  });
 }
 
 function closeCard($card) {
-    $(".img-close-card").on("click", () => {
-        $($card).addClass("d-none");
-        $($card).children(".card-pokemon__container-img").children(".card-pokemon__img").removeClass("img-pokemon-expanded");
-        $($card).removeClass("card-expanded");
-        $($card).children(".card-pokemon__description").addClass("d-none");
-        $($card).removeClass("border-0");
+  $('.img-close-card').on('click', () => {
+    $($card).addClass('d-none');
+    $($card).children('.card-pokemon__container-img').children('.card-pokemon__img').removeClass('img-pokemon-expanded');
+    $($card).removeClass('card-expanded');
+    $($card).children('.card-pokemon__description').addClass('d-none');
+    $($card).removeClass('border-0');
 
-        $(".img-close-card").addClass("d-none");
-        $(".card-pokemon").removeClass("d-none");
-        $("nav").removeClass("d-none");
-
-    })
+    $('.img-close-card').addClass('d-none');
+    $('.card-pokemon').removeClass('d-none');
+    $('nav').removeClass('d-none');
+  });
 }
 
 function createCardPokemon(
-    namePokemon,
-    typesArray,
-    imgUrl,
-    height,
-    weight,
-    id,
-    abilitiesArray,
-    statsArray,
-    habitat,
-    eggGroupsArray
+  namePokemon,
+  typesArray,
+  imgUrl,
+  height,
+  weight,
+  id,
+  abilitiesArray,
+  statsArray,
+  habitat,
+  eggGroupsArray,
 ) {
-    const card = `
+  const card = `
   <div id=${id} class="card-pokemon card ms-3 me-3 mb-4 p-3">
   
     <div class="d-flex card-pokemon__container-img justify-content-center">
@@ -88,9 +78,7 @@ function createCardPokemon(
     <p class="m-0 mb-3 card-pokemon__name text-center">${capitalizeFirstLetter(namePokemon)}</p>
   
     <div class="d-flex card-pokemon__container-types gap-4 justify-content-center align-items-center">
-        ${typesArray.map((type) => {
-        return `<p class="card-text card-pokemon__type ${type} m-0 rounded p-1">${capitalizeFirstLetter(type)}</p>`;
-    })}
+        ${typesArray.map((type) => `<p class="card-text card-pokemon__type ${type} m-0 rounded p-1">${capitalizeFirstLetter(type)}</p>`)}
     </div>
   
     <div class="card-body card-pokemon__description d-none rounded p-2 mb-0 mt-4">
@@ -108,9 +96,7 @@ function createCardPokemon(
           <div> 
             Egg Groups:
             <ul class="m-0"> 
-             ${eggGroupsArray.map((eggGroup) => {
-        return `<li class="text-white opacity-75">${capitalizeFirstLetter(eggGroup)}</li>`;
-    })}
+             ${eggGroupsArray.map((eggGroup) => `<li class="text-white opacity-75">${capitalizeFirstLetter(eggGroup)}</li>`)}
             </ul>
           </div>
         </div>
@@ -118,9 +104,7 @@ function createCardPokemon(
         <div class="card-pokemon__container-abilities m-0 ">
             Abilities:
             <ul class="m-0">
-                ${abilitiesArray.map((ability) => {
-        return `<li class="text-white opacity-75">${capitalizeFirstLetter(ability)}</li>`;
-    })}
+                ${abilitiesArray.map((ability) => `<li class="text-white opacity-75">${capitalizeFirstLetter(ability)}</li>`)}
             </ul>
         </div>
       </div>
@@ -128,10 +112,8 @@ function createCardPokemon(
         <div>
           <div class="card-pokemon__container-stats"> Stats:
               <ul class="m-0">
-                ${statsArray.map((stat) => {
-        return `<li>${capitalizeFirstLetter(stat.name)}: <span class="text-white opacity-75">${stat.baseStat}</span>
-                </li>`;
-    })}
+                ${statsArray.map((stat) => `<li>${capitalizeFirstLetter(stat.name)}: <span class="text-white opacity-75">${stat.base_stat}</span>
+                </li>`)}
                 <li>Total: <span class="text-white opacity-75">${calculateTotalStat(statsArray)}</span></li>
                 </ul>
           </div>
@@ -142,100 +124,111 @@ function createCardPokemon(
     </div>
   </div>
    `;
-    return card.replace(/,/g, "");
-}
-
-function listenNavigationOfPage() {
-    goNextPage(infoUrl);
-    goPreviousPage(infoUrl);
+  return card.replace(/,/g, '');
 }
 
 function getAndRenderDataPokemons() {
+  getPokemons().then((data) => {
+    const { pokemons } = data;
 
-    getPokemons().then((data) => {
-        const pokemons = data.pokemons;
+    pokemons.forEach((pokemon) => {
+      const urlPokemon = pokemon.url;
+      const pokemonData = {
+        name: '',
+        types: [],
+        imgUrl: '',
+        height: '',
+        weight: '',
+        id: 0,
+        abilities: [],
+        stats: [],
+        habitat: '',
+        eggGroups: [],
+      };
 
-        pokemons.forEach((pokemon) => {
-            const urlPokemon = pokemon.url;
-            const pokemonData = {
-                name: "",
-                types: [],
-                imgUrl: "",
-                height: "",
-                weight: "",
-                id: 0,
-                abilities: [],
-                stats: [],
-                habitat: "",
-                eggGroups: [],
-            };
+      getInfoPokemon(urlPokemon)
+        .then((data) => {
+          pokemonData.id = data.id;
+          pokemonData.imgUrl = data.sprites.other.dream_world.front_default;
+          pokemonData.name = data.name;
+          pokemonData.weight = data.weight;
+          pokemonData.height = data.height;
 
-            getInfoPokemon(urlPokemon)
-                .then((data) => {
-                    pokemonData.id = data.id;
-                    pokemonData.imgUrl = data.sprites.other.dream_world.front_default;
-                    pokemonData.name = data.name;
-                    pokemonData.weight = data.weight;
-                    pokemonData.height = data.height;
+          data.types.forEach((type) => {
+            pokemonData.types.push(type.type.name);
+          });
 
-                    data.types.map((type) => {
-                        pokemonData.types.push(type.type.name);
-                    });
+          data.abilities.forEach((ability) => {
+            pokemonData.abilities.push(ability.ability.name);
+          });
 
-                    data.abilities.map((ability) => {
-                        pokemonData.abilities.push(ability.ability.name);
-                    });
+          data.stats.forEach((stat) => {
+            pokemonData.stats.push({ name: stat.stat.name, base_stat: stat.base_stat });
+          });
 
-                    data.stats.map((stat) => {
-                        pokemonData.stats.push({ name: stat.stat.name, baseStat: stat.base_stat });
-                    });
+          getHabitatPokemon(data.name).then((data) => {
+            pokemonData.habitat = data.habitat;
+          }).then(() => {
+            getEggGroupsPokemon(data.name).then((data) => {
+              data.eggGroups.forEach((eggGroup) => {
+                pokemonData.eggGroups.push(eggGroup);
+              });
 
-                    getHabitatPokemon(data.name).then((data) => {
-                        pokemonData.habitat = data.habitat;
+              return pokemonData;
+            }).then((data) => {
+              const $card = createCardPokemon(
+                data.name,
+                data.types,
+                data.imgUrl,
+                data.height,
+                data.weight,
+                data.id,
+                data.abilities,
+                data.stats,
+                data.habitat,
+                data.eggGroups,
+              );
 
-                    }).then(() => {
+              const cardId = $.parseHTML($card)[1].id;
+              renderCard($card);
 
-                        getEggGroupsPokemon(data.name).then((data) => {
-                            data.eggGroups.map((eggGroup) => {
-                                pokemonData.eggGroups.push(eggGroup);
-                            })
-
-                            return pokemonData;
-
-                        }).then((data) => {
-                            const $card = createCardPokemon(
-                                data.name,
-                                data.types,
-                                data.imgUrl,
-                                data.height,
-                                data.weight,
-                                data.id,
-                                data.abilities,
-                                data.stats,
-                                data.habitat,
-                                data.eggGroups
-                            );
-
-                            const cardId = $.parseHTML($card)[1].id;
-                            renderCard($card);
-
-                            $(`#${cardId}`).on("click", function () {
-                                $(".img-close-card").removeClass("d-none");
-                                $(".card-pokemon").addClass("d-none");
-                                $("nav").addClass("d-none");
-                                $(this).removeClass("d-none");
-                                $(this).addClass("border-0");
-                                $(this).children(".card-pokemon__description").removeClass("d-none");
-                                $(this).addClass("card-expanded");
-                                $(this).children(".card-pokemon__container-img").children(".card-pokemon__img").addClass("img-pokemon-expanded");
-                                closeCard(this);
-                            });
-                        })
-                    });
-                });
-
+              $(`#${cardId}`).on('click', function () { /* eslint func-names: */
+                $('.img-close-card').removeClass('d-none');
+                $('.card-pokemon').addClass('d-none');
+                $('nav').addClass('d-none');
+                $(this).removeClass('d-none');
+                $(this).addClass('border-0');
+                $(this).children('.card-pokemon__description').removeClass('d-none');
+                $(this).addClass('card-expanded');
+                $(this).children('.card-pokemon__container-img').children('.card-pokemon__img').addClass('img-pokemon-expanded');
+                closeCard(this);
+              });
+            });
+          });
         });
-    })
+    });
+  });
 }
 
-export { getAndRenderDataPokemons, rotatePokeballs, listenNavigationOfPage }
+function goNextPage(infoUrl) {
+  $('.link-navigation-next').on('click', () => {
+    infoUrl.page = 'next';
+    $('.container-cards-pokemons').empty();
+    getAndRenderDataPokemons();
+  });
+}
+
+function goPreviousPage(infoUrl) {
+  $('.link-navigation-back').on('click', () => {
+    infoUrl.page = 'previous';
+    $('.container-cards-pokemons').empty();
+    getAndRenderDataPokemons();
+  });
+}
+
+function listenNavigationOfPage() {
+  goNextPage(infoUrl);
+  goPreviousPage(infoUrl);
+}
+
+export { getAndRenderDataPokemons, rotatePokeballs, listenNavigationOfPage };
