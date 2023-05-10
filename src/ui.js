@@ -110,27 +110,40 @@ function createCardPokemon(
   return $(clone).find('.card-pokemon')[0];
 }
 
+function listenClickInCard($card) {
+  $($card).on('click', function () { /* eslint func-names: */
+    $('.img-close-card').removeClass('d-none');
+    $('.card-pokemon').addClass('d-none');
+    $('nav').addClass('d-none');
+    $(this).removeClass('d-none');
+    $(this).addClass('border-0');
+    $(this).children('.card-pokemon__description').removeClass('d-none');
+    $(this).addClass('card-expanded');
+    $(this).children('.card-pokemon__container-img').children('.card-pokemon__img').addClass('img-pokemon-expanded');
+    closeCard(this);
+  });
+}
+
 function getAndRenderPokemons() {
   getPokemons().then((data) => {
     const { pokemons } = data;
 
     pokemons.forEach((pokemon) => {
       const urlPokemon = pokemon.url;
-      const pokemonData = {
-        name: '',
-        types: [],
-        imgUrl: '',
-        height: '',
-        weight: '',
-        id: 0,
-        abilities: [],
-        stats: [],
-        habitat: '',
-        eggGroups: [],
-      };
 
       getInfoPokemon(urlPokemon)
         .then((data) => {
+          const pokemonData = {
+            name: '',
+            types: [],
+            imgUrl: '',
+            height: '',
+            weight: '',
+            id: 0,
+            abilities: [],
+            stats: [],
+          };
+
           pokemonData.id = data.id;
           pokemonData.imgUrl = data.sprites.other.dream_world.front_default;
           pokemonData.name = data.name;
@@ -149,43 +162,35 @@ function getAndRenderPokemons() {
             pokemonData.stats.push({ name: stat.stat.name, base_stat: stat.base_stat });
           });
 
-          getHabitatPokemon(data.name).then((data) => {
-            pokemonData.habitat = data.habitat;
+          return pokemonData;
+        }).then((pokemonData) => {
+          getHabitatPokemon(pokemonData.name).then((response) => {
+            // eslint-disable-next-line no-param-reassign
+            pokemonData.habitat = response.habitat;
           }).then(() => {
-            getEggGroupsPokemon(data.name).then((data) => {
-              data.eggGroups.forEach((eggGroup) => {
+            // eslint-disable-next-line no-param-reassign
+            pokemonData.eggGroups = [];
+            getEggGroupsPokemon(pokemonData.name).then((response) => {
+              response.eggGroups.forEach((eggGroup) => {
                 pokemonData.eggGroups.push(eggGroup);
               });
-
-              return pokemonData;
-            }).then((data) => {
+            }).then(() => {
               const $card = createCardPokemon(
-                data.name,
-                data.types,
-                data.imgUrl,
-                data.height,
-                data.weight,
-                data.id,
-                data.abilities,
-                data.stats,
-                data.habitat,
-                data.eggGroups,
+                pokemonData.name,
+                pokemonData.types,
+                pokemonData.imgUrl,
+                pokemonData.height,
+                pokemonData.weight,
+                pokemonData.id,
+                pokemonData.abilities,
+                pokemonData.stats,
+                pokemonData.habitat,
+                pokemonData.eggGroups,
               );
 
               renderCard($card);
               const cardId = $($card).attr('id');
-
-              $(`#${cardId}`).on('click', function () { /* eslint func-names: */
-                $('.img-close-card').removeClass('d-none');
-                $('.card-pokemon').addClass('d-none');
-                $('nav').addClass('d-none');
-                $(this).removeClass('d-none');
-                $(this).addClass('border-0');
-                $(this).children('.card-pokemon__description').removeClass('d-none');
-                $(this).addClass('card-expanded');
-                $(this).children('.card-pokemon__container-img').children('.card-pokemon__img').addClass('img-pokemon-expanded');
-                closeCard(this);
-              });
+              listenClickInCard($(`#${cardId}`));
             });
           });
         });
