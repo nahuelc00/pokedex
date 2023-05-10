@@ -4,47 +4,46 @@ const infoUrl = {
   page: '',
 };
 
-function getPokemons() {
-  return fetch(infoUrl.url)
-    .catch('Failed to fetch pokemons')
-    .then((data) => data.json())
-    .then((data) => {
-      infoUrl.page === 'next' ? (infoUrl.url = data.next) : ''; // eslint-disable-line no-unused-expressions
+async function getPokemons() {
+  const response = await fetch(infoUrl.url);
+  const responseInJson = await response.json();
+  const nextUrlPokemons = responseInJson.next;
+  const previousUrlPokemons = responseInJson.previous;
 
-      if (infoUrl.page === 'previous' && infoUrl.url === infoUrl.urlInitial) {
-        infoUrl.url = infoUrl.urlInitial;
-      } else if (infoUrl.page === 'previous') {
-        infoUrl.url = data.previous;
-      }
-    })
-    .then(() => fetch(infoUrl.url).then((data) => data.json()).then((data) => ({
-      pokemons: data.results,
-    })));
+  infoUrl.page === 'next' ? (infoUrl.url = nextUrlPokemons) : ''; // eslint-disable-line no-unused-expressions
+
+  if (infoUrl.page === 'previous' && infoUrl.url === infoUrl.urlInitial) {
+    infoUrl.url = infoUrl.urlInitial;
+  } else if (infoUrl.page === 'previous') {
+    infoUrl.url = previousUrlPokemons;
+  }
+
+  const responsePokemons = await fetch(infoUrl.url);
+  const responsePokemonsInJson = await responsePokemons.json();
+  return { pokemons: responsePokemonsInJson.results };
 }
 
-function getInfoPokemon(urlOfPokemon) {
-  return fetch(urlOfPokemon)
-    .catch('Failed to fetch info of pokemon')
-    .then((response) => response.json())
-    .then((data) => data);
+async function getInfoPokemon(urlOfPokemon) {
+  const response = await fetch(urlOfPokemon);
+  const infoPokemonJson = response.json();
+  return infoPokemonJson;
 }
 
-function getHabitatPokemon(pokemonName) {
-  return fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`)
-    .catch('Failed to fetch habitat of pokemon')
-    .then((response) => response.json()).then((data) => ({ habitat: data.habitat.name }));
+async function getHabitatPokemon(pokemonName) {
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`);
+  const responseJson = await response.json();
+  const habitat = responseJson.habitat.name;
+  return { habitat };
 }
 
-function getEggGroupsPokemon(pokemonName) {
-  return fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`)
-    .catch('Failed to fetch egg group of pokemon')
-    .then((response) => response.json()).then((data) => {
-      const eggGroups = [];
-      data.egg_groups.forEach((eggGroup) => {
-        eggGroups.push(eggGroup.name);
-      });
-      return { eggGroups };
-    });
+async function getEggGroupsPokemon(pokemonName) {
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`);
+  const responseJson = await response.json();
+  const eggGroups = [];
+  responseJson.egg_groups.forEach((eggGroup) => {
+    eggGroups.push(eggGroup.name);
+  });
+  return { eggGroups };
 }
 
 export {
