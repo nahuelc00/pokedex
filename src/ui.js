@@ -82,6 +82,8 @@ function createCardPokemon(
   const $stats = $(clone).find('.card-pokemon__stats');
 
   $img.attr('src', imgUrl);
+  $img.attr('alt', namePokemon);
+
   $namePokemon.text(capitalizeFirstLetter(namePokemon));
 
   typesArray.forEach((type) => {
