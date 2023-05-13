@@ -4,41 +4,12 @@
 
 import {
   getPokemons, getEggGroupsPokemon, getHabitatPokemon, getInfoPokemon,
-  infoUrl,
+  infoUrl, getPokemonsQuantity,
 } from './pokemon.js';
 import { convertHectogramToKilogram, calculateTotalStat, capitalizeFirstLetter } from './utilities.js';
 
 function renderCard($card) {
   $('.container-cards-pokemons').append($card);
-}
-
-function rotatePokeballs() {
-  $('.header__img-pokeball-1').on('click', () => {
-    $('.header__img-pokeball-1').addClass('rotate-pokeball');
-    $('.header__img-pokeball-1').css('pointer-events', 'none');
-    setTimeout(() => {
-      $('.header__img-pokeball-1').removeClass('rotate-pokeball');
-      $('.header__img-pokeball-1').css('pointer-events', 'initial');
-    }, 2500);
-  });
-
-  $('.header__img-pokeball-2').on('click', () => {
-    $('.header__img-pokeball-2').addClass('rotate-pokeball');
-    $('.header__img-pokeball-2').css('pointer-events', 'none');
-    setTimeout(() => {
-      $('.header__img-pokeball-2').removeClass('rotate-pokeball');
-      $('.header__img-pokeball-2').css('pointer-events', 'initial');
-    }, 2500);
-  });
-
-  $('.footer__img-pokeball').on('click', () => {
-    $('.footer__img-pokeball').addClass('rotate-pokeball');
-    $('.footer__img-pokeball').css('pointer-events', 'none');
-    setTimeout(() => {
-      $('.footer__img-pokeball').removeClass('rotate-pokeball');
-      $('.footer__img-pokeball').css('pointer-events', 'initial');
-    }, 2500);
-  });
 }
 
 function closeCard($card) {
@@ -208,29 +179,55 @@ function getAndRenderPokemons() {
   });
 }
 
-function goNextPage(infoUrl) {
-  $('.link-navigation-next').on('click', () => {
-    // eslint-disable-next-line no-param-reassign
-    infoUrl.page = 'next';
-    $('.container-cards-pokemons').empty();
-    getAndRenderPokemons();
+function renderPagination() {
+  const $containerItemsPagination = $('.container-pagination');
+  $containerItemsPagination.append('<li class="page-item link-navigation-back"><a class="page-link rounded-pill" href="#"><--</a></li>');
+  $containerItemsPagination.append(`<li class="page-item text-primary fs-2 ms-3 me-3 d-grid align-content-center">${infoUrl.numberOfPageActual}</li>`);
+  $containerItemsPagination.append('<li class="page-item link-navigation-next"><a class="page-link rounded-pill" href="#">--></a></li>');
+}
+
+function goNextPage() {
+  $('.link-navigation-next').on('click', async () => {
+    const limitPerPage = infoUrl.limit;
+    const quantityPokemons = await getPokemonsQuantity();
+    const numberTotalOfPages = Math.floor(quantityPokemons / limitPerPage);
+    if (infoUrl.numberOfPageActual !== numberTotalOfPages) {
+      // eslint-disable-next-line no-param-reassign
+      infoUrl.page = 'next';
+      // eslint-disable-next-line no-param-reassign
+      infoUrl.numberOfPageActual += 1;
+      $('.container-cards-pokemons').empty();
+      $('.container-pagination').empty();
+      renderPagination();
+      // eslint-disable-next-line no-use-before-define
+      listenNavigationOfPage();
+      getAndRenderPokemons();
+    }
   });
 }
 
-function goPreviousPage(infoUrl) {
+function goPreviousPage() {
   $('.link-navigation-back').on('click', () => {
     if (infoUrl.urlActual !== infoUrl.urlInitial) {
       // eslint-disable-next-line no-param-reassign
       infoUrl.page = 'previous';
+      // eslint-disable-next-line no-param-reassign
+      infoUrl.numberOfPageActual -= 1;
       $('.container-cards-pokemons').empty();
+      $('.container-pagination').empty();
+      renderPagination();
+      // eslint-disable-next-line no-use-before-define
+      listenNavigationOfPage();
       getAndRenderPokemons();
     }
   });
 }
 
 function listenNavigationOfPage() {
-  goNextPage(infoUrl);
-  goPreviousPage(infoUrl);
+  goNextPage();
+  goPreviousPage();
 }
 
-export { getAndRenderPokemons, rotatePokeballs, listenNavigationOfPage };
+export {
+  getAndRenderPokemons, listenNavigationOfPage, renderPagination,
+};

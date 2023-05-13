@@ -1,7 +1,9 @@
 const infoUrl = {
+  limit: 20,
   urlInitial: 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20',
   urlActual: 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20',
   page: '',
+  numberOfPageActual: 1,
 };
 
 async function getPokemons() {
@@ -16,6 +18,12 @@ async function getPokemons() {
   const responsePokemons = await fetch(infoUrl.urlActual);
   const responsePokemonsInJson = await responsePokemons.json();
   return { pokemons: responsePokemonsInJson.results };
+}
+
+async function getPokemonsQuantity() {
+  const response = await fetch(infoUrl.urlActual);
+  const responseInJson = await response.json();
+  return responseInJson.count;
 }
 
 async function getInfoPokemon(urlOfPokemon) {
@@ -42,6 +50,6 @@ async function getEggGroupsPokemon(pokemonName) {
 }
 
 export {
-  getPokemons, getInfoPokemon, getHabitatPokemon, getEggGroupsPokemon,
+  getPokemons, getInfoPokemon, getHabitatPokemon, getEggGroupsPokemon, getPokemonsQuantity,
 };
 export { infoUrl };

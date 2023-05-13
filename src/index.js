@@ -1,10 +1,12 @@
 /* eslint-disable import/extensions */
-import { getAndRenderPokemons, rotatePokeballs, listenNavigationOfPage } from './ui.js';
+import {
+  getAndRenderPokemons, listenNavigationOfPage, renderPagination,
+} from './ui.js';
 
 function initialize() {
-  rotatePokeballs();
-  getAndRenderPokemons();
+  renderPagination();
   listenNavigationOfPage();
+  getAndRenderPokemons();
 }
 
 function main() {

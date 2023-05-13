@@ -1,15 +1,14 @@
 /* Header and Footer */
 
-.header,
-.footer {
-  height: 150px;
+.header {
+  height: 120px;
   background-color: #ffa500;
 }
 
-.footer{
+.footer {
   height: 50px;
+  background-color: #ffa500;
 }
-
 
 .header__img-pokeball,
 .footer__img-pokeball {
@@ -24,40 +23,24 @@
   }
 }
 
-.header__img-pokeball,
-.footer__img-pokeball:hover {
-  cursor: pointer;
-}
-
-.rotate-pokeball {
-  transform: rotate(3600deg);
-  transition: all 2s;
-}
-
-.container-title-img__img{
+.container-title-img__img {
   width: 180px;
   height: 180px;
 }
 @media (min-width: 480px) {
-  .container-title-img__img{
+  .container-title-img__img {
     width: 300px;
     height: 300px;
-  }
-}
-@media (min-width: 688px) {
-  .container-title-img__img{
-    width: 350px;
-    height: 350px;
   }
 }
 
 /* Main */
 
-main{
+main {
   min-height: 600px;
 }
 
-.container-img-close-card{
+.container-img-close-card {
   margin-right: 40vw;
 }
 
@@ -81,16 +64,16 @@ main{
   }
 }
 
-.img-close-card{
+.img-close-card {
   width: 25px;
   height: 25px;
 }
 
-.img-close-card:hover{
+.img-close-card:hover {
   cursor: pointer;
 }
 
- .card-pokemon__img {
+.card-pokemon__img {
   width: 130px;
   height: 130px;
 }
@@ -116,20 +99,20 @@ main{
 .card-pokemon__container-habitat-egg-groups,
 .card-pokemon__container-abilities,
 .card-pokemon__container-stats {
-  font-size: 16px; 
+  font-size: 16px;
 }
 @media (min-width: 480px) {
   .card-pokemon__type,
   .card-pokemon__container-height-weight,
   .card-pokemon__container-habitat-egg-groups,
   .card-pokemon__container-abilities,
-  .card-pokemon__container-stats{
+  .card-pokemon__container-stats {
     font-size: 20px;
   }
 }
 
- @media (min-width: 480px) {
-  .img-pokemon-expanded{
+@media (min-width: 480px) {
+  .img-pokemon-expanded {
     width: 200px;
     height: 200px;
   }
@@ -143,12 +126,6 @@ main{
     width: 600px;
   }
 }
-
-.link-navigation {
-  border-color: #3b83bd;
-}
-
-
 /* Colors */
 .grass {
   background-color: #9bcc50;
@@ -210,15 +187,14 @@ main{
   background-color: #51c4e7;
 }
 
-.dragon{
+.dragon {
   background-color: chocolate;
 }
 
-.dark{
+.dark {
   background-color: #707070;
 }
 
-.ghost{
-background-color: #7b62a3;
+.ghost {
+  background-color: #7b62a3;
 }
-
