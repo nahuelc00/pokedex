@@ -128,7 +128,12 @@ function listenClickInCard($card) {
   });
 }
 
+function renderLoader() {
+  $('.loader').removeClass('d-none').addClass('d-flex');
+}
+
 function getAndRenderPokemons() {
+  renderLoader();
   getPokemons().then((data) => {
     const { pokemons } = data;
 
