@@ -110,6 +110,10 @@ function createCardPokemon(
   return $(clone).find('.card-pokemon')[0];
 }
 
+function removeLoader() {
+  $('.loader').removeClass('d-flex').addClass('d-none');
+}
+
 function listenClickInCard($card) {
   $($card).on('click', function () { /* eslint func-names: */
     $('.img-close-card').removeClass('d-none');
@@ -174,6 +178,7 @@ function getAndRenderPokemons() {
               response.eggGroups.forEach((eggGroup) => {
                 pokemonData.eggGroups.push(eggGroup);
               });
+              localStorage.setItem(`pokemon-${pokemonData.name}`, JSON.stringify(pokemonData));
             }).then(() => {
               const $card = createCardPokemon(
                 pokemonData.name,
@@ -187,7 +192,7 @@ function getAndRenderPokemons() {
                 pokemonData.habitat,
                 pokemonData.eggGroups,
               );
-
+              removeLoader();
               renderCard($card);
               const cardId = $($card).attr('id');
               listenClickInCard($(`#${cardId}`));
