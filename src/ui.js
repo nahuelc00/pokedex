@@ -4,7 +4,7 @@
 
 import {
   getPokemons, getEggGroupsPokemon, getHabitatPokemon, getInfoPokemon,
-  infoUrl, getPokemonsQuantity,
+  infoUrl, getPokemonsQuantity, updateUrlActual,
 } from './pokemon.js';
 import { convertHectogramToKilogram, calculateTotalStat, capitalizeFirstLetter } from './utilities.js';
 
@@ -105,7 +105,7 @@ function renderLoader() {
 
 function getAndRenderPokemons() {
   renderLoader();
-  getPokemons().then((data) => {
+  return getPokemons().then((data) => {
     const { pokemons } = data;
 
     pokemons.forEach((pokemon) => {
@@ -122,10 +122,14 @@ function getAndRenderPokemons() {
             id: 0,
             abilities: [],
             stats: [],
+            eggGroups: [],
+            habitat: '',
           };
 
           pokemonData.id = data.id;
-          pokemonData.imgUrl = data.sprites.other.dream_world.front_default;
+          pokemonData.imgUrl = data.sprites.other.dream_world.front_default
+          || data.sprites.other['official-artwork'].front_default
+          || data.sprites.front_default;
           pokemonData.name = data.name;
           pokemonData.weight = data.weight;
           pokemonData.height = data.height;
@@ -144,81 +148,144 @@ function getAndRenderPokemons() {
 
           return pokemonData;
         }).then((pokemonData) => {
-          getHabitatPokemon(pokemonData.name).then((response) => {
+          if (pokemonData.id > 10000) {
             // eslint-disable-next-line no-param-reassign
-            pokemonData.habitat = response.habitat;
-          }).then(() => {
+            pokemonData.habitat = 'no-habitat';
             // eslint-disable-next-line no-param-reassign
-            pokemonData.eggGroups = [];
-            getEggGroupsPokemon(pokemonData.name).then((response) => {
-              response.eggGroups.forEach((eggGroup) => {
-                pokemonData.eggGroups.push(eggGroup);
-              });
-              localStorage.setItem(`pokemon-${pokemonData.name}`, JSON.stringify(pokemonData));
+            pokemonData.eggGroups = ['no-egg-groups'];
+            const $card = createCardPokemon(
+              pokemonData.name,
+              pokemonData.types,
+              pokemonData.imgUrl,
+              pokemonData.height,
+              pokemonData.weight,
+              pokemonData.id,
+              pokemonData.abilities,
+              pokemonData.stats,
+              pokemonData.habitat,
+              pokemonData.eggGroups,
+            );
+            removeLoader();
+            renderCard($card);
+            const cardId = $($card).attr('id');
+            listenClickInCard($(`#${cardId}`));
+          } else {
+            getHabitatPokemon(pokemonData.id).then((response) => {
+            // eslint-disable-next-line no-param-reassign
+              pokemonData.habitat = response.habitat;
             }).then(() => {
-              const $card = createCardPokemon(
-                pokemonData.name,
-                pokemonData.types,
-                pokemonData.imgUrl,
-                pokemonData.height,
-                pokemonData.weight,
-                pokemonData.id,
-                pokemonData.abilities,
-                pokemonData.stats,
-                pokemonData.habitat,
-                pokemonData.eggGroups,
-              );
-              removeLoader();
-              renderCard($card);
-              const cardId = $($card).attr('id');
-              listenClickInCard($(`#${cardId}`));
+            // eslint-disable-next-line no-param-reassign
+              pokemonData.eggGroups = [];
+              getEggGroupsPokemon(pokemonData.id).then((response) => {
+                response.eggGroups.forEach((eggGroup) => {
+                  pokemonData.eggGroups.push(eggGroup);
+                });
+              }).then(() => {
+                const $card = createCardPokemon(
+                  pokemonData.name,
+                  pokemonData.types,
+                  pokemonData.imgUrl,
+                  pokemonData.height,
+                  pokemonData.weight,
+                  pokemonData.id,
+                  pokemonData.abilities,
+                  pokemonData.stats,
+                  pokemonData.habitat,
+                  pokemonData.eggGroups,
+                );
+                removeLoader();
+                renderCard($card);
+                const cardId = $($card).attr('id');
+                listenClickInCard($(`#${cardId}`));
+              });
             });
-          });
+          }
         });
     });
   });
 }
 
 function renderPagination() {
-  const $containerItemsPagination = $('.container-pagination');
-  $containerItemsPagination.append('<li class="page-item link-navigation-back"><a class="page-link rounded-pill" href="#"><--</a></li>');
-  $containerItemsPagination.append(`<li class="page-item text-primary fs-2 ms-3 me-3 d-grid align-content-center">${infoUrl.numberOfPageActual}</li>`);
-  $containerItemsPagination.append('<li class="page-item link-navigation-next"><a class="page-link rounded-pill" href="#">--></a></li>');
+  return getPokemonsQuantity().then((quantity) => {
+    const $containerItemsPagination = $('.container-pagination');
+    $containerItemsPagination.append('<li class="page-item link-navigation-back"><a class="page-link rounded-pill" href="#"><--</a></li>');
+    $containerItemsPagination.append(`<li class="page-item text-primary fs-2 ms-3 me-3 d-grid align-content-center"><input class="text-primary border-top-0 border-start-0 border-end-0 number-page text-center" type="text" value="${infoUrl.numberOfPageActual}"></li>`);
+    $containerItemsPagination.append(`<li class="page-item text-primary fs-2 ms-3 me-3 d-grid align-content-center"><input disabled class="bg-transparent opacity-75 text-primary border-0 number-page text-center" type="text" value="${Math.floor(quantity / infoUrl.limitOfPokemons)}"></li>`);
+    $containerItemsPagination.append('<li class="page-item link-navigation-next"><a class="page-link rounded-pill" href="#">GO</a></li>');
+  });
 }
 
 function goNextPage() {
   $('.link-navigation-next').on('click', async () => {
-    const limitPerPage = infoUrl.limit;
+    const limitPerPage = infoUrl.limitOfPokemons;
     const quantityPokemons = await getPokemonsQuantity();
-    const numberTotalOfPages = Math.floor(quantityPokemons / limitPerPage);
-    if (infoUrl.numberOfPageActual !== numberTotalOfPages) {
-      // eslint-disable-next-line no-param-reassign
-      infoUrl.page = 'next';
-      // eslint-disable-next-line no-param-reassign
-      infoUrl.numberOfPageActual += 1;
-      $('.container-cards-pokemons').empty();
-      $('.container-pagination').empty();
-      renderPagination();
-      // eslint-disable-next-line no-use-before-define
-      listenNavigationOfPage();
-      getAndRenderPokemons();
+    const $numberPage = $('.number-page');
+    const totalPages = Math.floor(quantityPokemons / limitPerPage);
+    const enteredPage = Number($numberPage.val());
+
+    if (Number.isNaN(enteredPage)) {
+      $('.number-page').addClass('border-danger');
+      return;
     }
+    if (enteredPage < 0) {
+      $('.number-page').addClass('border-danger');
+      return;
+    }
+    if (enteredPage === 0) {
+      $('.number-page').addClass('border-danger');
+      return;
+    }
+
+    $('.number-page').removeClass('border-danger');
+
+    if (enteredPage !== infoUrl.numberOfPageActual) {
+      if (enteredPage < totalPages || enteredPage === totalPages) {
+        infoUrl.numberOfPageActual = Number($('.number-page').val());
+        if (infoUrl.numberOfPageActual === 1) {
+          infoUrl.numberOfPageActual = 1;
+          infoUrl.offset = 0;
+          updateUrlActual(infoUrl.offset);
+        } else {
+          infoUrl.offset = infoUrl.numberOfPageActual * infoUrl.limitOfPokemons;
+          updateUrlActual(infoUrl.offset);
+        }
+      } else {
+        $('.number-page').addClass('border-danger');
+        return;
+      }
+    } else if (enteredPage === totalPages) {
+      $('.number-page').addClass('border-danger');
+      return;
+    } else {
+      infoUrl.numberOfPageActual += 1;
+      infoUrl.offset += 20;
+      updateUrlActual(infoUrl.offset);
+    }
+
+    $('.container-cards-pokemons').empty();
+    $('.container-pagination').empty();
+    await getAndRenderPokemons();
+    await renderPagination();
+    // eslint-disable-next-line no-use-before-define
+    listenNavigationOfPage();
   });
 }
 
 function goPreviousPage() {
-  $('.link-navigation-back').on('click', () => {
+  $('.link-navigation-back').on('click', async () => {
     if (infoUrl.urlActual !== infoUrl.urlInitial) {
       // eslint-disable-next-line no-param-reassign
-      infoUrl.page = 'previous';
+      // infoUrl.page = 'previous';
       // eslint-disable-next-line no-param-reassign
       infoUrl.numberOfPageActual -= 1;
+      infoUrl.offset -= 20;
+      updateUrlActual(infoUrl.offset);
       $('.container-cards-pokemons').empty();
       $('.container-pagination').empty();
-      renderPagination();
+      await getAndRenderPokemons();
+      await renderPagination();
       // eslint-disable-next-line no-use-before-define
       listenNavigationOfPage();
-      getAndRenderPokemons();
     }
   });
 }

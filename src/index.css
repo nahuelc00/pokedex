@@ -126,6 +126,11 @@ main {
     width: 600px;
   }
 }
+
+.number-page {
+  width: 60px;
+}
+
 /* Colors */
 .grass {
   background-color: #9bcc50;

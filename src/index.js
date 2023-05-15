@@ -3,10 +3,10 @@ import {
   getAndRenderPokemons, listenNavigationOfPage, renderPagination,
 } from './ui.js';
 
-function initialize() {
-  renderPagination();
+async function initialize() {
+  await getAndRenderPokemons();
+  await renderPagination();
   listenNavigationOfPage();
-  getAndRenderPokemons();
 }
 
 function main() {
