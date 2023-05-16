@@ -2,7 +2,6 @@
 /* eslint-disable no-shadow */
 /* global  $ */
 
-// 57:21
 import {
   getPokemons, getEggGroupsPokemon, getHabitatPokemon, getInfoPokemon,
 } from '../services/pokemon.js';
