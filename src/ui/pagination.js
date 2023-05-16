@@ -17,26 +17,23 @@ function renderPagination() {
 
 function goNextPage() {
   $('.link-navigation-next').on('click', async () => {
-    const limitPerPage = infoUrl.limitOfPokemons;
     const quantityPokemons = await getPokemonsQuantity();
-    const $numberPage = $('.number-page');
+
+    const limitPerPage = infoUrl.limitOfPokemons;
     const totalPages = Math.floor(quantityPokemons / limitPerPage);
+
+    const $numberPage = $('.number-page');
     const enteredPage = Number($numberPage.val());
 
-    if (Number.isNaN(enteredPage)) {
-      $('.number-page').addClass('border-danger');
-      return;
-    }
-    if (enteredPage < 0) {
-      $('.number-page').addClass('border-danger');
-      return;
-    }
-    if (enteredPage === 0) {
-      $('.number-page').addClass('border-danger');
-      return;
-    }
+    const isDecimal = enteredPage.toString().includes('.');
+    const isNaN = Number.isNaN(enteredPage);
+    const isLessThanZero = enteredPage < 0;
+    const isEqualToZero = enteredPage === 0;
 
-    $('.number-page').removeClass('border-danger');
+    if (isDecimal || isNaN || isLessThanZero || isEqualToZero) {
+      $('.number-page').addClass('border-danger');
+      return;
+    }
 
     if (enteredPage !== infoUrl.numberOfPageActual) {
       if (enteredPage < totalPages || enteredPage === totalPages) {
