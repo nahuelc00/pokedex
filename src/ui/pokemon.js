@@ -36,11 +36,11 @@ function createCardPokemon(pokemonData) {
   const $stats = $(clone).find('.card-pokemon__stats');
 
   $img.attr('src', pokemonData.imgUrl);
-  $img.attr('alt', pokemonData.namePokemon);
+  $img.attr('alt', pokemonData.name);
 
-  $namePokemon.text(capitalizeFirstLetter(pokemonData.namePokemon));
+  $namePokemon.text(capitalizeFirstLetter(pokemonData.name));
 
-  pokemonData.typesArray.forEach((type) => {
+  pokemonData.types.forEach((type) => {
     $containerTypes.append(`<p class="card-text card-pokemon__type ${type} m-0 rounded p-1">${capitalizeFirstLetter(type)}</p>`);
   });
 
@@ -48,18 +48,18 @@ function createCardPokemon(pokemonData) {
   $weight.text(`${convertHectogramToKilogram(pokemonData.weight)} Kg`);
   $habitat.text(capitalizeFirstLetter(pokemonData.habitat));
 
-  pokemonData.eggGroupsArray.forEach((eggGroup) => {
+  pokemonData.eggGroups.forEach((eggGroup) => {
     $eggGroups.append(`<li class="text-white opacity-75">${capitalizeFirstLetter(eggGroup)}</li>`);
   });
 
-  pokemonData.abilitiesArray.forEach((ability) => {
+  pokemonData.abilities.forEach((ability) => {
     $abilities.append(`<li class="text-white opacity-75">${capitalizeFirstLetter(ability)}</li>`);
   });
 
-  pokemonData.statsArray.forEach((stat) => {
+  pokemonData.stats.forEach((stat) => {
     $stats.append(`<li>${capitalizeFirstLetter(stat.name)}: <span class="text-white opacity-75">${stat.base_stat}</span></li>`);
   });
-  $stats.append(`<li>Total: <span class="text-white opacity-75">${calculateTotalStat(pokemonData.statsArray)}</span></li>`);
+  $stats.append(`<li>Total: <span class="text-white opacity-75">${calculateTotalStat(pokemonData.stats)}</span></li>`);
 
   return $(clone).find('.card-pokemon')[0];
 }

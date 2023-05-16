@@ -28,7 +28,6 @@ function getAndRenderPokemons() {
       const pokemonInStorage = getPokemonFromStorage(pokemon.name);
       if (pokemonInStorage) {
         const $card = createCardPokemon(pokemonInStorage);
-
         removeLoader();
         renderCard($card);
         const cardId = $($card).attr('id');
@@ -38,25 +37,18 @@ function getAndRenderPokemons() {
         getInfoPokemon(urlPokemon)
           .then((data) => {
             const pokemonData = {
-              name: '',
+              name: data.name,
               types: [],
-              imgUrl: '',
-              height: '',
-              weight: '',
-              id: 0,
+              imgUrl: data.sprites.other.dream_world.front_default
+              || data.sprites.other['official-artwork'].front_default || data.sprites.front_default,
+              height: data.height,
+              weight: data.weight,
+              id: data.id,
               abilities: [],
               stats: [],
               eggGroups: [],
               habitat: '',
             };
-
-            pokemonData.id = data.id;
-            pokemonData.imgUrl = data.sprites.other.dream_world.front_default
-            || data.sprites.other['official-artwork'].front_default
-            || data.sprites.front_default;
-            pokemonData.name = data.name;
-            pokemonData.weight = data.weight;
-            pokemonData.height = data.height;
 
             data.types.forEach((type) => {
               pokemonData.types.push(type.type.name);
