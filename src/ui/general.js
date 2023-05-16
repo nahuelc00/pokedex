@@ -3,7 +3,8 @@
 /* global  $ */
 
 import {
-  getPokemons, getEggGroupsPokemon, getHabitatPokemon, getInfoPokemon,
+  getPokemons, getHabitat, getEggGroups,
+  getInfoPokemon, getInfoOfSpecie,
 } from '../services/pokemon.js';
 
 import { createCardPokemon, renderCard, listenClickInCard } from './pokemon.js';
@@ -26,18 +27,7 @@ function getAndRenderPokemons() {
     pokemons.forEach((pokemon) => {
       const pokemonInStorage = getPokemonFromStorage(pokemon.name);
       if (pokemonInStorage) {
-        const $card = createCardPokemon(
-          pokemonInStorage.name,
-          pokemonInStorage.types,
-          pokemonInStorage.imgUrl,
-          pokemonInStorage.height,
-          pokemonInStorage.weight,
-          pokemonInStorage.id,
-          pokemonInStorage.abilities,
-          pokemonInStorage.stats,
-          pokemonInStorage.habitat,
-          pokemonInStorage.eggGroups,
-        );
+        const $card = createCardPokemon(pokemonInStorage);
 
         removeLoader();
         renderCard($card);
@@ -87,18 +77,8 @@ function getAndRenderPokemons() {
               pokemonData.habitat = 'no-habitat';
               // eslint-disable-next-line no-param-reassign
               pokemonData.eggGroups = ['no-egg-groups'];
-              const $card = createCardPokemon(
-                pokemonData.name,
-                pokemonData.types,
-                pokemonData.imgUrl,
-                pokemonData.height,
-                pokemonData.weight,
-                pokemonData.id,
-                pokemonData.abilities,
-                pokemonData.stats,
-                pokemonData.habitat,
-                pokemonData.eggGroups,
-              );
+
+              const $card = createCardPokemon(pokemonData);
 
               setPokemonInStorage(pokemonData.name, pokemonData);
 
@@ -107,37 +87,24 @@ function getAndRenderPokemons() {
               const cardId = $($card).attr('id');
               listenClickInCard($(`#${cardId}`));
             } else {
-              getHabitatPokemon(pokemonData.id).then((response) => {
-              // eslint-disable-next-line no-param-reassign
-                pokemonData.habitat = response.habitat;
-              }).then(() => {
-              // eslint-disable-next-line no-param-reassign
-                pokemonData.eggGroups = [];
-                getEggGroupsPokemon(pokemonData.id).then((response) => {
-                  response.eggGroups.forEach((eggGroup) => {
-                    pokemonData.eggGroups.push(eggGroup);
-                  });
-                }).then(() => {
-                  const $card = createCardPokemon(
-                    pokemonData.name,
-                    pokemonData.types,
-                    pokemonData.imgUrl,
-                    pokemonData.height,
-                    pokemonData.weight,
-                    pokemonData.id,
-                    pokemonData.abilities,
-                    pokemonData.stats,
-                    pokemonData.habitat,
-                    pokemonData.eggGroups,
-                  );
+              getInfoOfSpecie(pokemonData.id).then((infoOfSpecie) => {
+                const habitat = getHabitat(infoOfSpecie);
+                const eggGroups = getEggGroups(infoOfSpecie);
+                // eslint-disable-next-line no-param-reassign
+                pokemonData.habitat = habitat;
 
-                  setPokemonInStorage(pokemonData.name, pokemonData);
-
-                  removeLoader();
-                  renderCard($card);
-                  const cardId = $($card).attr('id');
-                  listenClickInCard($(`#${cardId}`));
+                eggGroups.forEach((eggGroup) => {
+                  pokemonData.eggGroups.push(eggGroup);
                 });
+
+                const $card = createCardPokemon(pokemonData);
+
+                setPokemonInStorage(pokemonData.name, pokemonData);
+
+                removeLoader();
+                renderCard($card);
+                const cardId = $($card).attr('id');
+                listenClickInCard($(`#${cardId}`));
               });
             }
           });

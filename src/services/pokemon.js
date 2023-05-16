@@ -6,6 +6,26 @@ async function getPokemons() {
   return { pokemons };
 }
 
+function getHabitat(infoOfSpecie) {
+  if (infoOfSpecie.habitat) {
+    return infoOfSpecie.habitat.name;
+  }
+  return 'no-habitat';
+}
+
+function getEggGroups(infoOfSpecie) {
+  const eggGroups = [];
+  infoOfSpecie.egg_groups.forEach((eggGroup) => {
+    eggGroups.push(eggGroup.name);
+  });
+  return eggGroups;
+}
+
+async function getInfoOfSpecie(idPokemon) {
+  const infoSpecie = await api.getInfoOfSpecieFromApi(idPokemon);
+  return infoSpecie;
+}
+
 async function getPokemonsQuantity() {
   const quantity = await api.getPokemonsQuantityFromApi();
   return quantity;
@@ -16,24 +36,7 @@ async function getInfoPokemon(urlPokemon) {
   return infoPokemonJson;
 }
 
-async function getHabitatPokemon(idPokemon) {
-  const response = await api.getHabitatPokemonFromApi(idPokemon);
-  if (response) {
-    return { habitat: response.name };
-  }
-  return { habitat: 'no-habitat' };
-}
-
-async function getEggGroupsPokemon(idPokemon) {
-  const eggGroupsApi = await api.getEggGroupsPokemonFromApi(idPokemon);
-  const eggGroups = [];
-
-  eggGroupsApi.forEach((eggGroup) => {
-    eggGroups.push(eggGroup.name);
-  });
-  return { eggGroups };
-}
-
 export {
-  getPokemons, getInfoPokemon, getHabitatPokemon, getEggGroupsPokemon, getPokemonsQuantity,
+  getPokemons, getInfoPokemon, getPokemonsQuantity,
+  getInfoOfSpecie, getHabitat, getEggGroups,
 };

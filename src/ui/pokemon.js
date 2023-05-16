@@ -20,22 +20,11 @@ function closeCard($card) {
   });
 }
 
-function createCardPokemon(
-  namePokemon,
-  typesArray,
-  imgUrl,
-  height,
-  weight,
-  id,
-  abilitiesArray,
-  statsArray,
-  habitat,
-  eggGroupsArray,
-) {
+function createCardPokemon(pokemonData) {
   const $templateCardPokemon = $('.template-card-pokemon');
   const clone = $templateCardPokemon[0].content.cloneNode(true);
 
-  $(clone).find('.card-pokemon').attr('id', id);
+  $(clone).find('.card-pokemon').attr('id', pokemonData.id);
   const $img = $(clone).find('.card-pokemon__img');
   const $namePokemon = $(clone).find('.card-pokemon__name');
   const $containerTypes = $(clone).find('.card-pokemon__container-types');
@@ -46,31 +35,31 @@ function createCardPokemon(
   const $abilities = $(clone).find('.card-pokemon__abilities');
   const $stats = $(clone).find('.card-pokemon__stats');
 
-  $img.attr('src', imgUrl);
-  $img.attr('alt', namePokemon);
+  $img.attr('src', pokemonData.imgUrl);
+  $img.attr('alt', pokemonData.namePokemon);
 
-  $namePokemon.text(capitalizeFirstLetter(namePokemon));
+  $namePokemon.text(capitalizeFirstLetter(pokemonData.namePokemon));
 
-  typesArray.forEach((type) => {
+  pokemonData.typesArray.forEach((type) => {
     $containerTypes.append(`<p class="card-text card-pokemon__type ${type} m-0 rounded p-1">${capitalizeFirstLetter(type)}</p>`);
   });
 
-  $height.text(`${height}0 cm`);
-  $weight.text(`${convertHectogramToKilogram(weight)} Kg`);
-  $habitat.text(capitalizeFirstLetter(habitat));
+  $height.text(`${pokemonData.height}0 cm`);
+  $weight.text(`${convertHectogramToKilogram(pokemonData.weight)} Kg`);
+  $habitat.text(capitalizeFirstLetter(pokemonData.habitat));
 
-  eggGroupsArray.forEach((eggGroup) => {
+  pokemonData.eggGroupsArray.forEach((eggGroup) => {
     $eggGroups.append(`<li class="text-white opacity-75">${capitalizeFirstLetter(eggGroup)}</li>`);
   });
 
-  abilitiesArray.forEach((ability) => {
+  pokemonData.abilitiesArray.forEach((ability) => {
     $abilities.append(`<li class="text-white opacity-75">${capitalizeFirstLetter(ability)}</li>`);
   });
 
-  statsArray.forEach((stat) => {
+  pokemonData.statsArray.forEach((stat) => {
     $stats.append(`<li>${capitalizeFirstLetter(stat.name)}: <span class="text-white opacity-75">${stat.base_stat}</span></li>`);
   });
-  $stats.append(`<li>Total: <span class="text-white opacity-75">${calculateTotalStat(statsArray)}</span></li>`);
+  $stats.append(`<li>Total: <span class="text-white opacity-75">${calculateTotalStat(pokemonData.statsArray)}</span></li>`);
 
   return $(clone).find('.card-pokemon')[0];
 }
