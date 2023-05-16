@@ -1,7 +1,6 @@
 /* eslint-disable import/extensions */
-import {
-  getAndRenderPokemons, listenNavigationOfPage, renderPagination,
-} from './ui.js';
+import { getAndRenderPokemons } from './ui/general.js';
+import { renderPagination, listenNavigationOfPage } from './ui/pagination.js';
 
 async function initialize() {
   await getAndRenderPokemons();

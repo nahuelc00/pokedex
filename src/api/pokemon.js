@@ -6,49 +6,42 @@ const infoUrl = {
   numberOfPageActual: 1,
 };
 
-async function getPokemons() {
+async function getPokemonsFromApi() {
   const response = await fetch(infoUrl.urlActual);
   const responseInJson = await response.json();
-  return { pokemons: responseInJson.results };
+  return responseInJson.results;
 }
 
-async function getPokemonsQuantity() {
+async function getPokemonsQuantityFromApi() {
   const response = await fetch(infoUrl.urlActual);
   const responseInJson = await response.json();
   return responseInJson.count;
 }
 
-async function getInfoPokemon(urlOfPokemon) {
+async function getInfoPokemonFromApi(urlOfPokemon) {
   const response = await fetch(urlOfPokemon);
   const infoPokemonJson = await response.json();
   return infoPokemonJson;
 }
 
-async function getHabitatPokemon(idPokemon) {
+async function getHabitatPokemonFromApi(idPokemon) {
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${idPokemon}`);
   const responseJson = await response.json();
-  if (responseJson.habitat) {
-    return { habitat: responseJson.habitat.name };
-  }
-  return { habitat: 'no-habitat' };
+  return responseJson.habitat;
 }
 
 function updateUrlActual(offset) {
   infoUrl.urlActual = `https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=20`;
 }
 
-async function getEggGroupsPokemon(idPokemon) {
+async function getEggGroupsPokemonFromApi(idPokemon) {
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${idPokemon}`);
   const responseJson = await response.json();
-  const eggGroups = [];
-  responseJson.egg_groups.forEach((eggGroup) => {
-    eggGroups.push(eggGroup.name);
-  });
-  return { eggGroups };
+  return responseJson.egg_groups;
 }
 
 export {
-  getPokemons, getInfoPokemon, getHabitatPokemon, getEggGroupsPokemon, getPokemonsQuantity,
-  updateUrlActual,
+  getPokemonsFromApi, getInfoPokemonFromApi, getHabitatPokemonFromApi, getEggGroupsPokemonFromApi,
+  getPokemonsQuantityFromApi, updateUrlActual,
 };
 export { infoUrl };

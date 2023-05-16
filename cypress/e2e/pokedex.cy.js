@@ -4,7 +4,7 @@
 /* global cy it beforeEach context */
 /* eslint no-shadow: */
 
-import { calculateTotalStat, capitalizeFirstLetter, convertHectogramToKilogram } from '../../src/utilities.js';
+import { calculateTotalStat, capitalizeFirstLetter, convertHectogramToKilogram } from '../../src/utilities/utilities.js';
 
 const URL = '127.0.0.1:8080';
 
