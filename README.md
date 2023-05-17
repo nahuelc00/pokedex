@@ -8,9 +8,7 @@
 #### to run tests:
 - Install http-server
 
-- run: ***npm run start***
-
-- run: ***npm run cypress:open***
+- run: ***npm run test-cypress***
 
 
 ### Demo: https://nahuelc00.github.io/pokedex/
