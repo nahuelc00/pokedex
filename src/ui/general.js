@@ -7,6 +7,8 @@ import {
   getInfoPokemon, getInfoOfSpecie,
 } from '../services/pokemon.js';
 
+import { checkPokemonHasSpecie } from '../validations/validations.js';
+
 import { createCardPokemon, renderCard, listenClickInCard } from './pokemon.js';
 
 import { setPokemonInStorage, getPokemonFromStorage } from '../storage/storage.js';
@@ -64,12 +66,13 @@ function getAndRenderPokemons() {
 
             return pokemonData;
           }).then((pokemonData) => {
-            if (pokemonData.id > 10000) {
-            // eslint-disable-next-line no-param-reassign
+            const hasSpecie = checkPokemonHasSpecie(pokemonData.id);
+
+            if (!hasSpecie) {
+              // eslint-disable-next-line no-param-reassign
               pokemonData.habitat = 'no-habitat';
               // eslint-disable-next-line no-param-reassign
               pokemonData.eggGroups = ['no-egg-groups'];
-
               const $card = createCardPokemon(pokemonData);
 
               setPokemonInStorage(pokemonData.name, pokemonData);
