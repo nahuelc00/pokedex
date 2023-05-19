@@ -5,11 +5,13 @@
 - download or clone repo
 - run: ***npm install***
 
-#### to run tests:
+#### to run Cypress:
 - Install http-server
 
 - run: ***npm run test-cypress***
 
+#### to run Jest:
+- run: ***npm run test-jest***
 
 ### Demo: https://nahuelc00.github.io/pokedex/
 
