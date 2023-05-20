@@ -8,10 +8,10 @@
 #### to run Cypress:
 - Install http-server
 
-- run: ***npm run test-cypress***
+- run: ***npm run test:ui***
 
 #### to run Jest:
-- run: ***npm run test-jest***
+- run: ***npm run test:dev***
 
 ### Demo: https://nahuelc00.github.io/pokedex/
 
