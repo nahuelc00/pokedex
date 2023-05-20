@@ -7,10 +7,10 @@
     "start": "http-server -c-1",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "test-cypress": "run-p start cypress:open",
-    "test-jest": "jest",
-    "test-jest-watch": "jest --watch",
-    "test-jest-coverage": "jest --collect-coverage"
+    "test:ui": "run-p start cypress:open",
+    "test:dev": "jest",
+    "test:dev-watch": "jest --watch",
+    "test:dev-coverage": "jest --collect-coverage"
   },
   "author": "",
   "license": "ISC",
