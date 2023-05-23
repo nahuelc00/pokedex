@@ -8,9 +8,9 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "test:ui": "run-p start cypress:open",
-    "test:dev": "jest",
+    "test:dev": "jest --collect-coverage",
     "test:dev-watch": "jest --watch",
-    "test:dev-coverage": "jest --collect-coverage"
+    "test:dev-coverage": "jest"
   },
   "author": "",
   "license": "ISC",
