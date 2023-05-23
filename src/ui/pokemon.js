@@ -1,5 +1,6 @@
 /* eslint-disable import/extensions */
 /* global  $ */
+
 import { convertHectogramToKilogram, calculateTotalStat, capitalizeFirstLetter } from '../utilities/utilities.js';
 
 function renderCard($card) {
@@ -20,20 +21,20 @@ function closeCard($card) {
   });
 }
 
-function createCardPokemon(pokemonData) {
-  const $templateCardPokemon = $('.template-card-pokemon');
-  const clone = $templateCardPokemon[0].content.cloneNode(true);
+function createCardPokemon(pokemonData, templateCardPokemon) {
+  const $cardPokemon = $(templateCardPokemon);
 
-  $(clone).find('.card-pokemon').attr('id', pokemonData.id);
-  const $img = $(clone).find('.card-pokemon__img');
-  const $namePokemon = $(clone).find('.card-pokemon__name');
-  const $containerTypes = $(clone).find('.card-pokemon__container-types');
-  const $height = $(clone).find('.card-pokemon__height > span');
-  const $weight = $(clone).find('.card-pokemon__weight > span');
-  const $habitat = $(clone).find('.card-pokemon__habitat > span');
-  const $eggGroups = $(clone).find('.card-pokemon__egg-groups');
-  const $abilities = $(clone).find('.card-pokemon__abilities');
-  const $stats = $(clone).find('.card-pokemon__stats');
+  $cardPokemon.attr('id', pokemonData.id);
+
+  const $img = $cardPokemon.find('.card-pokemon__img');
+  const $namePokemon = $cardPokemon.find('.card-pokemon__name');
+  const $containerTypes = $cardPokemon.find('.card-pokemon__container-types');
+  const $height = $cardPokemon.find('.card-pokemon__height > span');
+  const $weight = $cardPokemon.find('.card-pokemon__weight > span');
+  const $habitat = $cardPokemon.find('.card-pokemon__habitat > span');
+  const $eggGroups = $cardPokemon.find('.card-pokemon__egg-groups');
+  const $abilities = $cardPokemon.find('.card-pokemon__abilities');
+  const $stats = $cardPokemon.find('.card-pokemon__stats');
 
   $img.attr('src', pokemonData.imgUrl);
   $img.attr('alt', pokemonData.name);
@@ -61,7 +62,7 @@ function createCardPokemon(pokemonData) {
   });
   $stats.append(`<li>Total: <span class="text-white opacity-75">${calculateTotalStat(pokemonData.stats)}</span></li>`);
 
-  return $(clone).find('.card-pokemon')[0];
+  return $cardPokemon[0];
 }
 
 function listenClickInCard($card) {

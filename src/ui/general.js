@@ -23,13 +23,15 @@ function renderLoader() {
 
 function getAndRenderPokemons() {
   renderLoader();
+  const templateCardPokemon = $('.template-card-pokemon').html();
+
   return getPokemons().then((data) => {
     const { pokemons } = data;
 
     pokemons.forEach((pokemon) => {
       const pokemonInStorage = getPokemonFromStorage(pokemon.name);
       if (pokemonInStorage) {
-        const $card = createCardPokemon(pokemonInStorage);
+        const $card = createCardPokemon(pokemonInStorage, templateCardPokemon);
         removeLoader();
         renderCard($card);
         const cardId = $($card).attr('id');
@@ -73,7 +75,7 @@ function getAndRenderPokemons() {
               pokemonData.habitat = 'no-habitat';
               // eslint-disable-next-line no-param-reassign
               pokemonData.eggGroups = ['no-egg-groups'];
-              const $card = createCardPokemon(pokemonData);
+              const $card = createCardPokemon(pokemonData, templateCardPokemon);
 
               setPokemonInStorage(pokemonData.name, pokemonData);
 
@@ -92,7 +94,7 @@ function getAndRenderPokemons() {
                   pokemonData.eggGroups.push(eggGroup);
                 });
 
-                const $card = createCardPokemon(pokemonData);
+                const $card = createCardPokemon(pokemonData, templateCardPokemon);
 
                 setPokemonInStorage(pokemonData.name, pokemonData);
 
