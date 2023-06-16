@@ -13,6 +13,35 @@ import { createCardPokemon, renderCard, listenClickInCard } from './pokemon.js';
 
 import { setPokemonInStorage, getPokemonFromStorage } from '../storage/storage.js';
 
+class Pokemon {
+  constructor(pokemonData) {
+    this.name = pokemonData.name;
+    this.types = pokemonData.types.map((type) => type.type.name);
+    this.imgUrl = pokemonData.sprites.other.dream_world.front_default
+      || pokemonData.sprites.other['official-artwork'].front_default || pokemonData.sprites.front_default;
+    this.height = pokemonData.height;
+    this.weight = pokemonData.weight;
+    this.id = pokemonData.id;
+    this.abilities = pokemonData.abilities.map((ability) => ability.ability.name);
+    this.stats = pokemonData.stats.map((stat) => ({
+      name: stat.stat.name,
+      base_stat: stat.base_stat,
+    }));
+    this.eggGroups = [];
+    this.habitat = '';
+  }
+
+  setHabitat(habitat) {
+    this.habitat = habitat;
+  }
+
+  setEggGroups(eggGroups) {
+    eggGroups.forEach((eggGroup) => {
+      this.eggGroups.push(eggGroup);
+    });
+  }
+}
+
 function removeLoader() {
   $('.loader').removeClass('d-flex').addClass('d-none');
 }
@@ -40,63 +69,33 @@ function getAndRenderPokemons() {
         const urlPokemon = pokemon.url;
         getInfoPokemon(urlPokemon)
           .then((data) => {
-            const pokemonData = {
-              name: data.name,
-              types: [],
-              imgUrl: data.sprites.other.dream_world.front_default
-              || data.sprites.other['official-artwork'].front_default || data.sprites.front_default,
-              height: data.height,
-              weight: data.weight,
-              id: data.id,
-              abilities: [],
-              stats: [],
-              eggGroups: [],
-              habitat: '',
-            };
-
-            data.types.forEach((type) => {
-              pokemonData.types.push(type.type.name);
-            });
-
-            data.abilities.forEach((ability) => {
-              pokemonData.abilities.push(ability.ability.name);
-            });
-
-            data.stats.forEach((stat) => {
-              pokemonData.stats.push({ name: stat.stat.name, base_stat: stat.base_stat });
-            });
-
-            return pokemonData;
-          }).then((pokemonData) => {
-            const hasSpecie = checkPokemonHasSpecie(pokemonData.id);
+            const pokemon = new Pokemon(data);
+            return pokemon;
+          }).then((pokemon) => {
+            const hasSpecie = checkPokemonHasSpecie(pokemon.id);
 
             if (!hasSpecie) {
-              // eslint-disable-next-line no-param-reassign
-              pokemonData.habitat = 'no-habitat';
-              // eslint-disable-next-line no-param-reassign
-              pokemonData.eggGroups = ['no-egg-groups'];
-              const $card = createCardPokemon(pokemonData, templateCardPokemon);
+              pokemon.setHabitat('no-habitat');
+              pokemon.setEggGroups(['no-egg-groups']);
 
-              setPokemonInStorage(pokemonData.name, pokemonData);
+              const $card = createCardPokemon(pokemon, templateCardPokemon);
+              setPokemonInStorage(pokemon.name, pokemon);
 
               removeLoader();
               renderCard($card);
               const cardId = $($card).attr('id');
               listenClickInCard($(`#${cardId}`));
             } else {
-              getInfoOfSpecie(pokemonData.id).then((infoOfSpecie) => {
+              getInfoOfSpecie(pokemon.id).then((infoOfSpecie) => {
                 const habitat = getHabitat(infoOfSpecie);
                 const eggGroups = getEggGroups(infoOfSpecie);
-                // eslint-disable-next-line no-param-reassign
-                pokemonData.habitat = habitat;
 
-                eggGroups.forEach((eggGroup) => {
-                  pokemonData.eggGroups.push(eggGroup);
-                });
+                pokemon.setHabitat(habitat);
+                pokemon.setEggGroups(eggGroups);
 
-                const $card = createCardPokemon(pokemonData, templateCardPokemon);
+                const $card = createCardPokemon(pokemon, templateCardPokemon);
 
-                setPokemonInStorage(pokemonData.name, pokemonData);
+                setPokemonInStorage(pokemon.name, pokemon);
 
                 removeLoader();
                 renderCard($card);
