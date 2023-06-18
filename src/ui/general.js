@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable import/extensions */
 /* eslint-disable no-shadow */
 /* global  $ */
@@ -13,6 +14,16 @@ import { createCardPokemon, renderCard, listenClickInCard } from './pokemon.js';
 
 import { setPokemonInStorage, getPokemonFromStorage } from '../storage/storage.js';
 
+class Pokemons {
+  constructor(dataPokemons) {
+    this.pokemons = dataPokemons.pokemons;
+  }
+
+  getPokemons() {
+    return this.pokemons;
+  }
+}
+
 class Pokemon {
   constructor(pokemonData) {
     this.name = pokemonData.name;
@@ -27,8 +38,6 @@ class Pokemon {
       name: stat.stat.name,
       base_stat: stat.base_stat,
     }));
-    this.eggGroups = [];
-    this.habitat = '';
   }
 
   setHabitat(habitat) {
@@ -36,9 +45,7 @@ class Pokemon {
   }
 
   setEggGroups(eggGroups) {
-    eggGroups.forEach((eggGroup) => {
-      this.eggGroups.push(eggGroup);
-    });
+    this.eggGroups = eggGroups;
   }
 }
 
@@ -55,7 +62,8 @@ function getAndRenderPokemons() {
   const templateCardPokemon = $('.template-card-pokemon').html();
 
   return getPokemons().then((data) => {
-    const { pokemons } = data;
+    const pokemonsList = new Pokemons(data);
+    const pokemons = pokemonsList.getPokemons();
 
     pokemons.forEach((pokemon) => {
       const pokemonInStorage = getPokemonFromStorage(pokemon.name);
@@ -70,6 +78,10 @@ function getAndRenderPokemons() {
         getInfoPokemon(urlPokemon)
           .then((data) => {
             const pokemon = new Pokemon(data);
+
+            pokemon.setHabitat('');
+            pokemon.setEggGroups(['']);
+
             return pokemon;
           }).then((pokemon) => {
             const hasSpecie = checkPokemonHasSpecie(pokemon.id);
