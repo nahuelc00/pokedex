@@ -12,42 +12,10 @@ import { checkPokemonHasSpecie } from '../validations/validations.js';
 
 import { createCardPokemon, renderCard, listenClickInCard } from './pokemon.js';
 
+import { Pokemon } from '../entities/pokemon.js';
+import { Pokemons } from '../entities/pokemons.js';
+
 import { setPokemonInStorage, getPokemonFromStorage } from '../storage/storage.js';
-
-class Pokemons {
-  constructor(dataPokemons) {
-    this.pokemons = dataPokemons.pokemons;
-  }
-
-  getPokemons() {
-    return this.pokemons;
-  }
-}
-
-class Pokemon {
-  constructor(pokemonData) {
-    this.name = pokemonData.name;
-    this.types = pokemonData.types.map((type) => type.type.name);
-    this.imgUrl = pokemonData.sprites.other.dream_world.front_default
-      || pokemonData.sprites.other['official-artwork'].front_default || pokemonData.sprites.front_default;
-    this.height = pokemonData.height;
-    this.weight = pokemonData.weight;
-    this.id = pokemonData.id;
-    this.abilities = pokemonData.abilities.map((ability) => ability.ability.name);
-    this.stats = pokemonData.stats.map((stat) => ({
-      name: stat.stat.name,
-      base_stat: stat.base_stat,
-    }));
-  }
-
-  setHabitat(habitat) {
-    this.habitat = habitat;
-  }
-
-  setEggGroups(eggGroups) {
-    this.eggGroups = eggGroups;
-  }
-}
 
 function removeLoader() {
   $('.loader').removeClass('d-flex').addClass('d-none');
