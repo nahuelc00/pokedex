@@ -1,14 +1,14 @@
 class Pokemon {
-  constructor(pokemonData) {
-    this.name = pokemonData.name;
-    this.types = pokemonData.types.map((type) => type.type.name);
-    this.imgUrl = pokemonData.sprites.other.dream_world.front_default
-        || pokemonData.sprites.other['official-artwork'].front_default || pokemonData.sprites.front_default;
-    this.height = pokemonData.height;
-    this.weight = pokemonData.weight;
-    this.id = pokemonData.id;
-    this.abilities = pokemonData.abilities.map((ability) => ability.ability.name);
-    this.stats = pokemonData.stats.map((stat) => ({
+  constructor(name, types, sprites, height, weight, id, abilities, stats) {
+    this.name = name;
+    this.types = types.map((type) => type.type.name);
+    this.imgUrl = sprites.other.dream_world.front_default
+        || sprites.other['official-artwork'].front_default || sprites.front_default;
+    this.height = height;
+    this.weight = weight;
+    this.id = id;
+    this.abilities = abilities.map((ability) => ability.ability.name);
+    this.stats = stats.map((stat) => ({
       name: stat.stat.name,
       base_stat: stat.base_stat,
     }));

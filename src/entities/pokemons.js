@@ -1,6 +1,6 @@
 class Pokemons {
-  constructor(dataPokemons) {
-    this.pokemons = dataPokemons.pokemons;
+  constructor(pokemons) {
+    this.pokemons = pokemons;
   }
 
   getPokemons() {

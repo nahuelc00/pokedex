@@ -12,8 +12,8 @@ import { checkPokemonHasSpecie } from '../validations/validations.js';
 
 import { createCardPokemon, renderCard, listenClickInCard } from './pokemon.js';
 
-import { Pokemon } from '../entities/pokemon.js';
-import { Pokemons } from '../entities/pokemons.js';
+import { mapPokemon } from '../mappers/mapPokemon.js';
+import { mapPokemons } from '../mappers/mapPokemons.js';
 
 import { setPokemonInStorage, getPokemonFromStorage } from '../storage/storage.js';
 
@@ -30,8 +30,7 @@ function getAndRenderPokemons() {
   const templateCardPokemon = $('.template-card-pokemon').html();
 
   return getPokemons().then((data) => {
-    const pokemonsList = new Pokemons(data);
-    const pokemons = pokemonsList.getPokemons();
+    const pokemons = mapPokemons(data);
 
     pokemons.forEach((pokemon) => {
       const pokemonInStorage = getPokemonFromStorage(pokemon.name);
@@ -45,7 +44,7 @@ function getAndRenderPokemons() {
         const urlPokemon = pokemon.url;
         getInfoPokemon(urlPokemon)
           .then((data) => {
-            const pokemon = new Pokemon(data);
+            const pokemon = mapPokemon(data);
 
             pokemon.setHabitat('');
             pokemon.setEggGroups(['']);
