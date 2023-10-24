@@ -47,6 +47,7 @@ main {
 .container-cards-pokemons {
   display: grid;
   justify-content: center;
+  min-height: 800px;
 }
 @media (min-width: 688px) {
   .container-cards-pokemons {
